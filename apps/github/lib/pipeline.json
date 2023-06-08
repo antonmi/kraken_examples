@@ -1,0 +1,77 @@
+{
+  "name": "stream-similar-followers",
+  "components": [
+    {
+      "type": "stage",
+      "name": "init",
+      "transform": {"counter": 0, "limit": "args['limit'] || 10"}
+    },
+    {
+      "type": "stage",
+      "name": "search",
+      "service": {"name": "github", "function": "find_users"},
+      "prepare": {"query":  "args['query']", "per_page": 1},
+      "transform": {"username":  "get_in(args, ['usernames', Access.at(0)])"}
+    },
+    {
+      "type": "goto-point",
+      "name": "repeat"
+    },
+    {
+      "type": "stage",
+      "name": "get-user",
+      "service": {"name": "github", "function": "get_user"},
+      "prepare": {"username":  "args['username']"},
+      "transform": {"user_data":  "args"}
+    },
+    {
+      "type": "stage",
+      "name": "inc-counter",
+      "transform": {"counter":  "args['counter'] + 1"}
+    },
+    {
+      "type": "clone",
+      "name": "clone",
+      "to": [
+        {
+          "type": "stage",
+          "name": "get-followers",
+          "service": {"name": "github", "function": "get_followers"},
+          "prepare": {"username":  "args['username']"},
+          "transform": {"followers":  "args['followers']"}
+        },
+        {
+          "type": "switch",
+          "prepare": {
+            "count": "length(args['followers'])",
+            "counter": "args['counter']",
+            "limit": "args['limit']"
+          },
+          "condition": "if args['count'] > 0 && args['counter'] < args['limit'], do: \"branch1\", else: \"branch2\"",
+          "branches": {
+            "branch1": [
+              {
+                "type": "stage",
+                "name": "find-closest",
+                "service": {"name": "levenshtein", "function": "closest"},
+                "prepare": {"name":  "args['username']", "names":  "args['followers']"},
+                "transform": {"closest":  "args['closest']"}
+              },
+              {
+                "type": "stage",
+                "name": "reassign-vars",
+                "transform": {"username": "args['closest']", "followers": "hidden"}
+              },
+              {
+                "type": "goto",
+                "to": "repeat",
+                "condition": "true"
+              }
+            ],
+            "branch2": [{"type": "dead-end"}]
+          }
+        }
+      ]
+    }
+  ]
+}

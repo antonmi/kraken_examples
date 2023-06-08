@@ -1,0 +1,31 @@
+{
+  "name": "levenshtein",
+  "client": {
+    "module": "octopus.elixir-module-client",
+    "start": {
+      "code": [
+        "defmodule Distance do",
+        "def closest(%{\"name\" => name, \"names\" => names}) do",
+        "closest = Enum.min_by(names, &Levenshtein.distance(&1, name))",
+        "%{\"closest\" => closest}",
+        "end",
+        "end"
+      ]
+    }
+  },
+  "interface": {
+    "closest": {
+      "input": {
+        "name": {"type": "string"},
+        "names": {"type": "array"}
+      },
+      "call": {
+        "module": "Distance",
+        "function": "closest"
+      },
+      "output": {
+        "closest": {"type": "string"}
+      }
+    }
+  }
+}
