@@ -1,9 +1,9 @@
-defmodule Github.MixProject do
+defmodule Scaffold.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :github,
+      app: :scaffold,
       version: "0.1.0",
       build_path: "../../_build",
       config_path: "../../config/config.exs",
@@ -26,8 +26,7 @@ defmodule Github.MixProject do
   defp deps do
     [
       {:kraken, path: "/Users/anton.mishchukkloeckner.com/elixir/kraken"},
-      {:octopus_client_http_finch, "0.2.1"},
-      {:levenshtein, "0.3.0"}
+      {:octopus_client_agent_k_v_store, "~> 0.1"}
     ]
   end
 end

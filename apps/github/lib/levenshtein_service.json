@@ -1,16 +1,9 @@
 {
   "name": "levenshtein",
   "client": {
-    "module": "octopus.elixir-module-client",
+    "module": "octopus.lambda",
     "start": {
-      "code": [
-        "defmodule Distance do",
-        "def closest(%{\"name\" => name, \"names\" => names}) do",
-        "closest = Enum.min_by(names, &Levenshtein.distance(&1, name))",
-        "%{\"closest\" => closest}",
-        "end",
-        "end"
-      ]
+      "module": "Github.Lambdas.Distance"
     }
   },
   "interface": {
@@ -20,7 +13,6 @@
         "names": {"type": "array"}
       },
       "call": {
-        "module": "Distance",
         "function": "closest"
       },
       "output": {

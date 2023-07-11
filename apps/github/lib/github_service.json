@@ -28,7 +28,6 @@
         "usernames": "get_in(args, ['body', 'items', Access.all(), 'login'])"
       },
       "output": {
-        "total_count": {"type": "integer"},
         "usernames": {"type": "array"}
       }
     },
