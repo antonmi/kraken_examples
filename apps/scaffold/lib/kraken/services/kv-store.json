@@ -1,7 +1,7 @@
 {
   "name": "kv-store",
   "client": {
-    "module": "Scaffold.Clients.KVStore"
+    "module": "Scaffold.Kraken.Clients.KVStore"
   },
   "interface": {
     "set": {

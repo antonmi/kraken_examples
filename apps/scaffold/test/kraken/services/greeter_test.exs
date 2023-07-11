@@ -2,7 +2,7 @@ defmodule Scaffold.Services.GreeterTest do
   use ExUnit.Case, async: true
 
   def read_definition(filename) do
-    path = Path.expand("../../../lib/services", __ENV__.file)
+    path = Path.expand("../../../../lib/kraken/services", __ENV__.file)
     File.read!("#{path}/#{filename}")
   end
 

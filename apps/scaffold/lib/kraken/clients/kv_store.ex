@@ -1,4 +1,4 @@
-defmodule Scaffold.Clients.KVStore do
+defmodule Scaffold.Kraken.Clients.KVStore do
   @moduledoc """
   Simple key-value storage based on Agent.
   """

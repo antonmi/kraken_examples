@@ -1,4 +1,4 @@
-defmodule Scaffold.Lambdas.Greeter do
+defmodule Scaffold.Kraken.Lambdas.Greeter do
   def greet(%{"name" => name}) do
     %{"message" => "Hello, #{name}!"}
   end

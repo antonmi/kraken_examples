@@ -2,7 +2,7 @@
   "name": "greeter",
   "client": {
     "module": "Octopus.Lambda",
-    "start": {"module": "Scaffold.Lambdas.Greeter"}
+    "start": {"module": "Scaffold.Kraken.Lambdas.Greeter"}
   },
   "interface": {
     "greet": {

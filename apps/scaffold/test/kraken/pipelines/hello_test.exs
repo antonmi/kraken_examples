@@ -2,13 +2,18 @@ defmodule Scaffold.Pipelines.Hello.Test do
   use ExUnit.Case
 
   def read_service_definition(filename) do
-    path = Path.expand("../../../lib/services", __ENV__.file)
+    path = Path.expand("../../../../lib/kraken/services", __ENV__.file)
     File.read!("#{path}/#{filename}")
   end
 
   def read_pipeline_definition(filename) do
-    path = Path.expand("../../../lib/pipelines", __ENV__.file)
+    path = Path.expand("../../../../lib/kraken/pipelines", __ENV__.file)
     File.read!("#{path}/#{filename}")
+  end
+
+  def read_routes_definition() do
+    path = Path.expand("../../../../lib/kraken", __ENV__.file)
+    File.read!("#{path}/routes.json")
   end
 
   setup do
@@ -18,6 +23,7 @@ defmodule Scaffold.Pipelines.Hello.Test do
     Kraken.Services.start("kv-store")
     Kraken.Pipelines.define(read_pipeline_definition("hello.json"))
     Kraken.Pipelines.start("hello")
+    Kraken.Routes.define(read_routes_definition())
 
     on_exit(fn ->
       Kraken.Services.delete("greeter")
@@ -27,10 +33,11 @@ defmodule Scaffold.Pipelines.Hello.Test do
   end
 
   test "calls the pipeline" do
-    result = Kraken.Pipelines.call("hello", %{"name" => "Anton"})
+    event = %{"type" => "hello", "name" => "Anton"}
+    result = Kraken.call(event)
     assert result["message"] == "Hello, Anton!"
 
-    result = Kraken.Pipelines.call("hello", %{"name" => "Anton"})
+    result = Kraken.call(event)
     assert result["message"] == "I've already said hello to you, Anton."
   end
 end

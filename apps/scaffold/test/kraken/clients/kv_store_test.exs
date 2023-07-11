@@ -1,6 +1,6 @@
 defmodule Scaffold.Clients.KVStoreTest do
   use ExUnit.Case
-  alias Scaffold.Clients.KVStore
+  alias Scaffold.Kraken.Clients.KVStore
 
   describe "start/1" do
     setup do

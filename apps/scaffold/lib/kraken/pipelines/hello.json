@@ -10,7 +10,8 @@
     },
     {
       "type": "switch",
-      "condition": "if args['greeted']['value'], do: \"yes\", else: \"no\"",
+      "helpers": ["Scaffold.Kraken.Helpers.YesNoBranch"],
+      "condition": "yes_or_no(args, ['greeted', 'value'])",
       "branches": {
         "yes": [
           {
