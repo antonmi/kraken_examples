@@ -5,10 +5,10 @@ defmodule Scaffold.MixProject do
     [
       app: :scaffold,
       version: "0.1.0",
-      build_path: "../../_build",
-      config_path: "../../config/config.exs",
-      deps_path: "../../deps",
-      lockfile: "../../mix.lock",
+      build_path: "_build",
+      config_path: "config/config.exs",
+      deps_path: "deps",
+      lockfile: "mix.lock",
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
       deps: deps()
@@ -25,8 +25,7 @@ defmodule Scaffold.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:kraken, path: "/Users/anton.mishchukkloeckner.com/elixir/kraken"},
-      {:octopus_client_agent_k_v_store, "~> 0.1"}
+      {:kraken, path: "/Users/anton.mishchukkloeckner.com/elixir/kraken"}
     ]
   end
 end
