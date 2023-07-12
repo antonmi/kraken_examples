@@ -1,13 +1,14 @@
 defmodule Scaffold.Services.GreeterTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case
 
-  def read_definition(filename) do
-    path = Path.expand("../../../../lib/kraken/services", __ENV__.file)
-    File.read!("#{path}/#{filename}")
+  @kraken_folder Path.expand("../../../../lib/kraken", __ENV__.file)
+
+  def read_definition(path) do
+    File.read!("#{@kraken_folder}/#{path}")
   end
 
   setup do
-    {:ok, "greeter"} = Octopus.define(read_definition("greeter.json"))
+    {:ok, "greeter"} = Octopus.define(read_definition("services/greeter.json"))
     {:ok, _state} = Octopus.start("greeter")
 
     on_exit(fn -> Octopus.delete("greeter") end)

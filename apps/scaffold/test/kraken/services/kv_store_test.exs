@@ -1,13 +1,14 @@
 defmodule Scaffold.Services.StoreTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case
 
-  def read_definition(filename) do
-    path = Path.expand("../../../../lib/kraken/services", __ENV__.file)
-    File.read!("#{path}/#{filename}")
+  @kraken_folder Path.expand("../../../../lib/kraken", __ENV__.file)
+
+  def read_definition(path) do
+    File.read!("#{@kraken_folder}/#{path}")
   end
 
   setup do
-    {:ok, "kv-store"} = Octopus.define(read_definition("kv-store.json"))
+    {:ok, "kv-store"} = Octopus.define(read_definition("services/kv-store.json"))
     {:ok, _state} = Octopus.start("kv-store")
 
     on_exit(fn -> Octopus.delete("kv-store") end)

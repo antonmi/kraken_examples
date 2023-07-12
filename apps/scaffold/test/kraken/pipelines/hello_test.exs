@@ -1,29 +1,20 @@
 defmodule Scaffold.Pipelines.Hello.Test do
   use ExUnit.Case
 
-  def read_service_definition(filename) do
-    path = Path.expand("../../../../lib/kraken/services", __ENV__.file)
-    File.read!("#{path}/#{filename}")
-  end
+  @kraken_folder Path.expand("../../../../lib/kraken", __ENV__.file)
 
-  def read_pipeline_definition(filename) do
-    path = Path.expand("../../../../lib/kraken/pipelines", __ENV__.file)
-    File.read!("#{path}/#{filename}")
-  end
-
-  def read_routes_definition() do
-    path = Path.expand("../../../../lib/kraken", __ENV__.file)
-    File.read!("#{path}/routes.json")
+  def read_definition(path) do
+    File.read!("#{@kraken_folder}/#{path}")
   end
 
   setup do
-    Kraken.Services.define(read_service_definition("greeter.json"))
+    Kraken.Services.define(read_definition("services/greeter.json"))
     Kraken.Services.start("greeter")
-    Kraken.Services.define(read_service_definition("kv-store.json"))
+    Kraken.Services.define(read_definition("services/kv-store.json"))
     Kraken.Services.start("kv-store")
-    Kraken.Pipelines.define(read_pipeline_definition("hello.json"))
+    Kraken.Pipelines.define(read_definition("pipelines/hello.json"))
     Kraken.Pipelines.start("hello")
-    Kraken.Routes.define(read_routes_definition())
+    Kraken.Routes.define(read_definition("routes.json"))
 
     on_exit(fn ->
       Kraken.Services.delete("greeter")
