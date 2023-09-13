@@ -25,7 +25,7 @@ defmodule KrakenInit.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:kraken, path: "/Users/anton.mishchukkloeckner.com/elixir/kraken"}
+      {:kraken, "0.3.1"}
     ]
   end
 end
