@@ -1,0 +1,16 @@
+{
+  "name": "io-inspect",
+  "client": {
+    "module": "octopus.lambda",
+    "start": {
+      "module": "Github.Lambdas.IOInspect"
+    }
+  },
+  "interface": {
+    "print": {
+      "call": {
+        "function": "print"
+      }
+    }
+  }
+}

@@ -30,6 +30,13 @@ defmodule PipelineTest do
       |> Router.call(%{})
 
     assert conn.resp_body =~ "{\"ok\""
+
+    conn =
+      :post
+      |> conn("/services/call/github/find_users", Jason.encode!(%{"query" => "antonmi"}))
+      |> Router.call(%{})
+
+    assert conn.resp_body =~ "{\"ok\":{\"total_count\":"
   end
 
   def define_and_start_levenshtein_service do
@@ -48,6 +55,63 @@ defmodule PipelineTest do
       |> Router.call(%{})
 
     assert conn.resp_body =~ "{\"ok\""
+  end
+
+  def define_and_start_clone_service do
+    service_json = File.read!("#{@path}/clone_service.json")
+
+    conn =
+      :post
+      |> conn("/services/define", service_json)
+      |> Router.call(%{})
+
+    assert conn.resp_body == "{\"ok\":\"clone-service\"}"
+
+    conn =
+      :post
+      |> conn("/services/start/clone-service")
+      |> Router.call(%{})
+
+    assert conn.resp_body =~ "{\"ok\""
+
+    conn =
+      :post
+      |> conn(
+        "/services/call/clone-service/clone",
+        Jason.encode!(%{"event" => %{"a" => 1}, "memo" => nil})
+      )
+      |> Router.call(%{})
+
+    assert conn.resp_body ==
+             "{\"ok\":{\"events\":[{\"a\":1},{\"a\":1,\"report\":true}],\"memo\":null}}"
+  end
+
+  def define_and_start_io_inspect_service do
+    service_json = File.read!("#{@path}/io_inspect_service.json")
+
+    conn =
+      :post
+      |> conn("/services/define", service_json)
+      |> Router.call(%{})
+
+    assert conn.resp_body == "{\"ok\":\"io-inspect\"}"
+
+    conn =
+      :post
+      |> conn("/services/start/io-inspect")
+      |> Router.call(%{})
+
+    assert conn.resp_body =~ "{\"ok\""
+
+    conn =
+      :post
+      |> conn(
+           "/services/call/io-inspect/print",
+           Jason.encode!(%{"value" => "Hello!"})
+         )
+      |> Router.call(%{})
+
+    assert conn.resp_body == "{\"ok\":{\"value\":\"Hello!\"}}"
   end
 
   def define_and_start_pipeline do
@@ -82,6 +146,8 @@ defmodule PipelineTest do
   test "pipeline call" do
     define_and_start_github_service()
     define_and_start_levenshtein_service()
+    define_and_start_clone_service()
+    define_and_start_io_inspect_service()
     define_and_start_pipeline()
     define_route()
 

@@ -5,7 +5,8 @@
     "start": {
       "base_url": "https://api.github.com",
       "headers": {
-        "Accept": "application/vnd.github+json"
+        "Accept": "application/vnd.github+json",
+        "Authorization": "Bearer YOUR_TOKEN"
       }
     }
   },

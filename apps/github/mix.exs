@@ -25,7 +25,7 @@ defmodule Github.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:kraken, path: "/Users/anton.mishchukkloeckner.com/elixir/kraken"},
+      {:kraken, "0.3.4"},
       {:octopus_client_http_finch, "0.2.1"},
       {:levenshtein, "0.3.0"}
     ]

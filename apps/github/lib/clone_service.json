@@ -1,0 +1,27 @@
+{
+  "name": "clone-service",
+  "client": {
+    "module": "octopus.lambda",
+    "start": {
+      "code": [
+        "defmodule Clone do",
+          "def clone(%{\"event\" => event, \"memo\" => nil}) do",
+            "clone_event = Map.put(event, \"report\", true)",
+            "%{\"events\" => [event, clone_event], \"memo\" => nil}",
+          "end",
+        "end"
+      ]
+    }
+  },
+  "interface": {
+    "clone": {
+      "input": {
+        "event": {"type": "object"}
+      },
+      "call": {
+        "module": "Clone",
+        "function": "clone"
+      }
+    }
+  }
+}
